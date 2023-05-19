@@ -22,6 +22,7 @@ class UserFactory extends Factory
             'company_id' => function () {
                 return Company::query()->inRandomOrder()->first()->id;
             }, // company_id 追加
+            'company_id' => null,
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
