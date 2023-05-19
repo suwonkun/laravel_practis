@@ -49,4 +49,15 @@ class CompanyTest extends TestCase
         $company = Company::where('name', 'PRUM')->first();
         $this->assertNotNull($company);
     }
+
+    public function testGetEditCompanies()
+    {
+        $company = Company::factory()->create();
+
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get("/companies/#{ $company>id }");
+
+        $response->assertStatus(200);
+    }
 }
