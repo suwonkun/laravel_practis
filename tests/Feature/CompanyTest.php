@@ -56,7 +56,7 @@ class CompanyTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get("/companies/#{ $company>id }");
+        $response = $this->actingAs($user)->get("/companies/#{ $company->id }");
 
         $response->assertStatus(200);
     }
