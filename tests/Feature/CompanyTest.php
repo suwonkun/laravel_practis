@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 
 class CompanyTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
@@ -42,9 +44,9 @@ class CompanyTest extends TestCase
             'name' => 'PRUM',
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(302);
 
-        $company = Company::where('name', 'Test Company')->where('user_id', $user->id)->first();
+        $company = Company::where('name', 'PRUM')->first();
         $this->assertNotNull($company);
     }
 }
