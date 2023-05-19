@@ -34,18 +34,14 @@ class CompanyTest extends TestCase
 
     public function testStoreCompanies()
     {
-        // テスト用のユーザーを作成する
         $user = User::factory()->create();
 
-        // テスト用のユーザーでログインする
         Auth::login($user);
 
-        // 会社を登録するリクエストを送信する
         $response = $this->post('/companies', [
             'name' => 'PRUM',
         ]);
 
-        // レスポンスのステータスコードが 200 であることをアサートする
         $response->assertStatus(200);
 
         $company = Company::where('name', 'Test Company')->where('user_id', $user->id)->first();
