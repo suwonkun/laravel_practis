@@ -60,4 +60,17 @@ class CompanyTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_update()
+    {
+        $company = Company::factory()->create();
+
+        $response = $this->put("/companies/#{ $company->id }", [
+            'name' => 'PRUM2',
+        ]);
+
+
+        $company = Company::where('name', 'PRUM2')->first();
+        $this->assertNotNull($company);
+    }
 }
