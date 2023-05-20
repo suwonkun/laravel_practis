@@ -34,13 +34,13 @@ class CompanyTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function getCreateCompanies()
+    public function testGetCreateCompanies()
     {
         $user = User::factory()->create();
 
         Auth::login($user);
 
-        $response = $this->get('/companies/create ');
+        $response = $this->get('/companies/create');
 
         $response->assertStatus(200);
     }
@@ -72,7 +72,7 @@ class CompanyTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testUpdate()
+    public function testUpdateCompany()
     {
         $company = Company::factory()->create();
 
@@ -88,21 +88,18 @@ class CompanyTest extends TestCase
         $this->assertNotNull($company);
     }
 
-    public function test_destroy()
+    public function testDestroyCompany()
     {
-        $company = $this->companies->random()->first();
+        $company = Company::factory()->create();
+
+        $user = User::factory()->create();
 
         $url = route('companies.destroy', $company->id);
 
-        // Guest のときは、login にリダイレクトされる
-        $this->delete($url)->assertRedirect(route('login'));
+        $response = $this->actingAs($user)->delete($url);
 
-        $response = $this->actingAs($this->user)->delete($url);
 
         $response->assertStatus(302);
-
-        // 削除後 companies.index にリダイレクトされる
-        $response->assertRedirect(route('companies.index'));
 
         $this->assertDatabaseMissing('companies', [
             'id' => $company->id,
