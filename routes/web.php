@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('companies', \App\Http\Controllers\CompanyController::class);
+
+    Route::get('/companies/{id}/sections/create', [SectionController::class, 'create'])->name('sections.create');
+    Route::post('/companies/{id}/sections', [SectionController::class, 'store'])->name('sections.store');
 });
 
 require __DIR__.'/auth.php';

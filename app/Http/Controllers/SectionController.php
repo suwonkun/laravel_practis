@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSectionRequest;
 use App\Http\Requests\UpdateSectionRequest;
+use App\Models\Company;
 use App\Models\Section;
 
 class SectionController extends Controller
@@ -23,9 +24,10 @@ class SectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $company = Company::find($id);
+        return view('sections.create', compact('company'));
     }
 
     /**
@@ -36,7 +38,7 @@ class SectionController extends Controller
      */
     public function store(StoreSectionRequest $request)
     {
-        //
+        return view('companies.create');
     }
 
     /**

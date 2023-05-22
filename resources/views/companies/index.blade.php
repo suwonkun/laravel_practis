@@ -20,6 +20,7 @@
                         <th>Name</th>
                         <th>Created At</th>
                         <th>Updated At</th>
+                        <th>Actions</th>  <!-- 追加 -->
                     </tr>
                     </thead>
                     <tbody>
@@ -29,6 +30,9 @@
                             <td>{{ Html::linkRoute('companies.show', $company->name, compact('company')) }}</td>
                             <td>{{ $company->created_at }}</td>
                             <td>{{ $company->updated_at }}</td>
+                            <td>
+                                <a href="{{ route('sections.create', ['id' => $company->id]) }}">部署追加</a>
+                            </td>  <!-- 追加 -->
                         </tr>
                     @endforeach
                     </tbody>
