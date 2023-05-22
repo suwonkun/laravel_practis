@@ -67,7 +67,7 @@ class CompanyTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get("/companies/#{ $company->id }");
+        $response = $this->actingAs($user)->get("/companies/$company->id");
 
         $response->assertStatus(200);
     }
@@ -80,11 +80,12 @@ class CompanyTest extends TestCase
 
         Auth::login($user);
 
-        $response = $this->post("/companies/#{ $company->id }", [
+        $response = $this->put("/companies/$company->id", [
             'name' => 'PRUM2',
         ]);
 
         $company = Company::where('name', 'PRUM2')->first();
+        $response->assertStatus(302);
         $this->assertNotNull($company);
     }
 
