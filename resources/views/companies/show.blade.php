@@ -29,7 +29,10 @@
                     <ul>
                         @foreach($sections as $section)
                             <div class="mt-2">
-                                <li>{{ $section->name }}</li>
+                                <a href="{{ route('sections.show', ['company' => $company, 'section' => $section]) }}">
+                                    {{ $section->name }}
+                                </a>
+                                <br>
                                 {{ Html::linkRoute('sections.edit', '編集', ['company' => $company, 'section' => $section]) }}
                                 {{ Form::open(['route' => ['sections.destroy', 'company' => $company, 'section' => $section], 'method' => 'delete', 'style' => 'display:inline']) }}
                                 {{ Form::submit('削除', ['onclick' => "return confirm('本当に削除しますか？')"]) }}
@@ -37,7 +40,7 @@
                             </div>
                         @endforeach
                     </ul>
-            </div>
+                </div>
             </div>
         </div>
     </div>

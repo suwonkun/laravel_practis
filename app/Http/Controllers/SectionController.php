@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSectionRequest;
 use App\Http\Requests\UpdateSectionRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Company;
 use App\Models\Section;
@@ -55,9 +56,21 @@ class SectionController extends Controller
      * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Section $section)
+    public function show(Company $company, Section $section)
     {
-        //
+        $unjoin_users = User::where('company_id', $company->id)
+            ->whereDoesntHave('sections', function ($query) use ($section) {
+                $query->where('section_id', $section->id);
+            })
+            ->get();
+
+        $join_users = User::where('company_id', $company->id)
+            ->whereHas('sections', function ($query) use ($section) {
+                $query->where('section_id', $section->id);
+            })
+            ->get();
+
+        return view('sections.show', compact('section', 'unjoin_users', 'company', 'join_users'));
     }
 
     /**

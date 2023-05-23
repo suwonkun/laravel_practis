@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\SectionUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,8 +36,12 @@ Route::middleware('auth')->group(function () {
         ->name('sections.edit');
     Route::put('/companies/{company}/sections/{section}', [SectionController::class, 'update'])
         ->name('sections.update');
+    Route::get('/companies/{company}/sections/{section}', [SectionController::class, 'show'])
+        ->name('sections.show');
     Route::delete('/companies/{company}/sections/{section}', [SectionController::class, 'destroy'])
         ->name('sections.destroy');
+    Route::post('/companies/{company}/sections/{section}', [SectionUserController::class, 'store'])
+        ->name('section_user.store');
 });
 
 require __DIR__ .'/auth.php';

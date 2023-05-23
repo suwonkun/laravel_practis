@@ -10,7 +10,7 @@ class UserSection extends Model
 {
     protected $fillable = [
         'user_id',
-        'company_id'
+        'section_id'
     ];
 
     use HasFactory;
