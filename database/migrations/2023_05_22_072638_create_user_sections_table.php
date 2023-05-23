@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_section', function (Blueprint $table) {
+        Schema::create('user_sections', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Section::class)->comment('部署ID');
             $table->foreignIdFor(\App\Models\User::class)->comment('ユーザーID');
