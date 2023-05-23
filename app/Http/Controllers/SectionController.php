@@ -34,16 +34,14 @@ class SectionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSectionRequest  $request
+     * @param \App\Http\Requests\StoreSectionRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreSectionRequest $request, $companyId): RedirectResponse
     {
-        $section = New Section();
+        $section = new Section();
         $company = Company::findOrFail($companyId);
-        // $company->sections->fill($request->validated())->save();
 
-        // $request->validated();
         $section->create([
             'company_id' => $company->id,
             'name' => $request->name
@@ -55,7 +53,7 @@ class SectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Section  $section
+     * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
     public function show(Section $section)
@@ -66,34 +64,46 @@ class SectionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Section  $section
+     * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function edit(Section $section)
+    public function edit($companyId, $sectionId)
     {
-        //
+        $section = Section::find($sectionId);
+        return view('sections.edit', compact('section'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSectionRequest  $request
-     * @param  \App\Models\Section  $section
+     * @param \App\Http\Requests\UpdateSectionRequest $request
+     * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSectionRequest $request, Section $section)
+    public function update(UpdateSectionRequest $request, $companyId, $sectionId)
     {
-        //
+        $section = Section::find($sectionId);
+        $section->name = $request->input('name');
+        $section->save();
+
+        $company = Company::find($companyId);
+
+        return redirect()->route('companies.show', ['company' => $company]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Section  $section
+     * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Section $section)
+    public function destroy(Section $section, $companyId, $sectionId)
     {
-        //
+        $section = Section::find($sectionId);
+        $section->delete();
+
+        $company = Company::find($companyId);
+
+        return redirect()->route('companies.show', ['company' => $company]);
     }
 }

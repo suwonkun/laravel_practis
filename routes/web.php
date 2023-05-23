@@ -31,6 +31,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/companies/{id}/sections/create', [SectionController::class, 'create'])->name('sections.create');
     Route::post('/companies/{id}/sections', [SectionController::class, 'store'])->name('sections.store');
+    Route::get('/companies/{companyId}/sections/{sectionId}/edit', [SectionController::class, 'edit'])
+        ->name('sections.edit');
+    Route::put('/companies/{companyId}/sections/{id}', [SectionController::class, 'update'])
+        ->name('sections.update');
+    Route::delete('/companies/{companyId}/sections/{sectionId}', [SectionController::class, 'destroy'])
+        ->name('sections.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
