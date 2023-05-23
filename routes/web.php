@@ -39,4 +39,4 @@ Route::middleware('auth')->group(function () {
         ->name('sections.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__ .'/auth.php';
