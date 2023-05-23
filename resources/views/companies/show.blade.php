@@ -25,13 +25,13 @@
                 </dl>
 
                 <div class="mt-6">
-                <h3>部署一覧</h3>
+                    <h3>部署一覧</h3>
                     <ul>
                         @foreach($sections as $section)
                             <div class="mt-2">
                                 <li>{{ $section->name }}</li>
-                                {{ Html::linkRoute('sections.edit', '編集', ['companyId' => $company->id, 'sectionId' => $section->id]) }}
-                                {{ Form::open(['route' => ['sections.destroy', 'companyId' => $company->id, 'sectionId' => $section->id], 'method' => 'delete', 'style' => 'display:inline']) }}
+                                {{ Html::linkRoute('sections.edit', '編集', ['company' => $company->id, 'section' => $section->id]) }}
+                                {{ Form::open(['route' => ['sections.destroy', 'company' => $company->id, 'section' => $section->id], 'method' => 'delete', 'style' => 'display:inline']) }}
                                 {{ Form::submit('削除', ['onclick' => "return confirm('本当に削除しますか？')"]) }}
                                 {{ Form::close() }}
                             </div>

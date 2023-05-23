@@ -37,10 +37,9 @@ class SectionController extends Controller
      * @param \App\Http\Requests\StoreSectionRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSectionRequest $request, $companyId): RedirectResponse
+    public function store(StoreSectionRequest $request, Company $company): RedirectResponse
     {
         $section = new Section();
-        $company = Company::findOrFail($companyId);
 
         $section->create([
             'company_id' => $company->id,
@@ -67,9 +66,8 @@ class SectionController extends Controller
      * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function edit($companyId, $sectionId)
+    public function edit(Company $company, Section $section)
     {
-        $section = Section::find($sectionId);
         return view('sections.edit', compact('section'));
     }
 
@@ -80,13 +78,12 @@ class SectionController extends Controller
      * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSectionRequest $request, $companyId, $sectionId)
+    public function update(UpdateSectionRequest $request, Company $company, Section $section)
     {
-        $section = Section::find($sectionId);
+        $section = Section::find($section->id);
         $section->name = $request->input('name');
         $section->save();
 
-        $company = Company::find($companyId);
 
         return redirect()->route('companies.show', ['company' => $company]);
     }
@@ -97,12 +94,9 @@ class SectionController extends Controller
      * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Section $section, $companyId, $sectionId)
+    public function destroy(Company $company, Section $section)
     {
-        $section = Section::find($sectionId);
         $section->delete();
-
-        $company = Company::find($companyId);
 
         return redirect()->route('companies.show', ['company' => $company]);
     }

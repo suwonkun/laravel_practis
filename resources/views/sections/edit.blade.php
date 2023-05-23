@@ -14,13 +14,16 @@
                     <h3 class="text-lg font-semibold mb-4">Edit Section: {{ $section->name }}</h3>
 
                     <!-- Section Edit Form -->
-                    <form action="{{ route('sections.update', ['companyId' => $section->company_id, 'id' => $section->id]) }}" method="POST">
+                    <form
+                        action="{{ route('sections.update', ['company' => $section->company_id, 'section' => $section->id]) }}"
+                        method="POST">
                         @csrf
                         @method('PUT')
 
                         <div class="mb-4">
                             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                            <input type="text" name="name" id="name" value="{{ $section->name }}" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+                            <input type="text" name="name" id="name" value="{{ $section->name }}"
+                                   class="mt-1 p-2 border border-gray-300 rounded-md w-full">
                         </div>
 
                         <div class="flex justify-end">

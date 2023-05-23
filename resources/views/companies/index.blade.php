@@ -31,7 +31,7 @@
                             <td>{{ $company->created_at }}</td>
                             <td>{{ $company->updated_at }}</td>
                             <td>
-                                <a href="{{ route('sections.create', ['id' => $company->id]) }}">部署追加</a>
+                                <a href="{{ route('sections.create', ['company' => $company->id]) }}">部署追加</a>
                             </td>  <!-- 追加 -->
                         </tr>
                     @endforeach

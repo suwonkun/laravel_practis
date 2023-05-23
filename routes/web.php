@@ -29,13 +29,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('companies', \App\Http\Controllers\CompanyController::class);
 
-    Route::get('/companies/{id}/sections/create', [SectionController::class, 'create'])->name('sections.create');
-    Route::post('/companies/{id}/sections', [SectionController::class, 'store'])->name('sections.store');
-    Route::get('/companies/{companyId}/sections/{sectionId}/edit', [SectionController::class, 'edit'])
+    Route::get('/companies/{company}/sections/create', [SectionController::class, 'create'])->name('sections.create');
+    Route::post('/companies/{company}/sections', [SectionController::class, 'store'])->name('sections.store');
+    Route::get('/companies/{company}/sections/{section}/edit', [SectionController::class, 'edit'])
         ->name('sections.edit');
-    Route::put('/companies/{companyId}/sections/{id}', [SectionController::class, 'update'])
+    Route::put('/companies/{company}/sections/{section}', [SectionController::class, 'update'])
         ->name('sections.update');
-    Route::delete('/companies/{companyId}/sections/{sectionId}', [SectionController::class, 'destroy'])
+    Route::delete('/companies/{company}/sections/{section}', [SectionController::class, 'destroy'])
         ->name('sections.destroy');
 });
 
