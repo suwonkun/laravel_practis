@@ -11,6 +11,7 @@ class Section extends Model
 
     protected $fillable = [
         'name',
+        'company_id'
     ];
 
     public function company(): BelongsTo

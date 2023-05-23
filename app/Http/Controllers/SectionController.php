@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSectionRequest;
 use App\Http\Requests\UpdateSectionRequest;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Company;
 use App\Models\Section;
 
@@ -36,9 +37,19 @@ class SectionController extends Controller
      * @param  \App\Http\Requests\StoreSectionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSectionRequest $request)
+    public function store(StoreSectionRequest $request, $companyId): RedirectResponse
     {
-        return view('companies.create');
+        $section = New Section();
+        $company = Company::findOrFail($companyId);
+        // $company->sections->fill($request->validated())->save();
+
+        // $request->validated();
+        $section->create([
+            'company_id' => $company->id,
+            'name' => $request->name
+        ]);
+
+        return new RedirectResponse(route('companies.index'));
     }
 
     /**
