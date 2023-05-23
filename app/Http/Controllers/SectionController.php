@@ -80,7 +80,6 @@ class SectionController extends Controller
      */
     public function update(UpdateSectionRequest $request, Company $company, Section $section)
     {
-        $section = Section::find($section->id);
         $section->name = $request->input('name');
         $section->save();
 

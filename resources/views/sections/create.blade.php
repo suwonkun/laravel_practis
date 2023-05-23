@@ -6,7 +6,7 @@
     </x-slot>
     <h1>{{ $company->name }}</h1>
 
-    <form action="{{ route('sections.store', ['company' => $company->id]) }}" method="POST">
+    <form action="{{ route('sections.store', ['company' => $company]) }}" method="POST">
         @csrf
         <input type="text" name="name" placeholder="Name">
         <button type="submit">Submit</button>

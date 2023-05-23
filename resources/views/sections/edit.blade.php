@@ -15,7 +15,7 @@
 
                     <!-- Section Edit Form -->
                     <form
-                        action="{{ route('sections.update', ['company' => $section->company_id, 'section' => $section->id]) }}"
+                        action="{{ route('sections.update', ['company' => $section->company_id, 'section' => $section]) }}"
                         method="POST">
                         @csrf
                         @method('PUT')
