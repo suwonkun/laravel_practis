@@ -14,15 +14,24 @@
                 {{ Html::linkRoute('companies.edit', '編集', compact('company')) }}
 
                 <dl>
-                    <dt>ID</dt>
+                    <dt class="mt-3">ID</dt>
                     <dd>{{ $company->id }}</dd>
-                    <dt>Name</dt>
+                    <dt class="mt-3">会社名</dt>
                     <dd>{{ $company->name }}</dd>
-                    <dt>Created at</dt>
+                    <dt class="mt-3">会社作成日</dt>
                     <dd>{{ $company->created_at }}</dd>
-                    <dt>Updated at</dt>
+                    <dt class="mt-3">会社更新日</dt>
                     <dd>{{ $company->updated_at }}</dd>
                 </dl>
+
+                <div class="mt-6">
+                <h3>部署一覧</h3>
+                <ul>
+                    @foreach($sections as $section)
+                        <li>{{ $section->name }}</li>
+                    @endforeach
+                </ul>
+            </div>
             </div>
         </div>
     </div>
