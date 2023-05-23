@@ -20,7 +20,7 @@ class SectionFactory extends Factory
         $company = Company::inRandomOrder()->first();
 
         return [
-            'name' => 'エンジニア',
+            'name' => $this->faker->word,
             'company_id' => $company->id,
         ];
     }
