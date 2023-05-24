@@ -58,7 +58,6 @@ class SectionTest extends TestCase
 
         Auth::login($this->user);
 
-
         $response = $this->post("/companies/$companyId/sections", [
             'name' => '人事',
         ]);
@@ -68,6 +67,40 @@ class SectionTest extends TestCase
         $section = Section::where('name', '人事')->first();
 
         $this->assertNotNull($section);
+
+        // バリデーション
+        $this->post("/companies/$companyId/sections", [
+            'name' => '人事',
+        ]);
+
+
+        $validation = '同じ名前の部署が既に存在します。';
+        $this->get("/companies/$companyId/sections/create")
+            ->assertSee($validation);
+
+        $this->post("/companies/$companyId/sections", [
+            'name' => '',
+        ]);
+
+        $validation = '名前は必ず指定してください。';
+        $this->get("/companies/$companyId/sections/create")
+            ->assertSee($validation);
+
+         $this->post("/companies/$companyId/sections", [
+            'name' => str_repeat('a', 256),
+        ]);
+
+        $validation = '名前は、255文字以下で指定してください。';
+        $this->get("/companies/$companyId/sections/create")
+            ->assertSee($validation);
+
+        $this->post("/companies/$companyId/sections", [
+            'name' => 12345,
+        ]);
+
+        $validation = '名前は文字列を指定してください。';
+        $this->get("/companies/$companyId/sections/create")
+            ->assertSee($validation);
     }
 
     public function test_show()
@@ -101,7 +134,7 @@ class SectionTest extends TestCase
 
         Auth::login($this->user);
 
-        $response = $this->put("companies/$companyId/sections/$sectionId", [  'name' => '営業',
+        $response = $this->put("companies/$companyId/sections/$sectionId", ['name' => '営業',
         ]);
 
         $section = Section::find($sectionId);
