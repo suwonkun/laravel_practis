@@ -14,6 +14,15 @@
                     <h3 class="text-lg font-semibold mb-4">Edit Section: {{ $section->name }}</h3>
 
                     <!-- Section Edit Form -->
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li style="color: red;">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form
                         action="{{ route('sections.update', ['company' => $section->company_id, 'section' => $section]) }}"
                         method="POST">

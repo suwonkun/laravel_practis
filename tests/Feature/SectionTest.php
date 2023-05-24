@@ -140,6 +140,37 @@ class SectionTest extends TestCase
         $section = Section::find($sectionId);
         $this->assertEquals('営業', $section->name);
         $response->assertStatus(302);
+
+        // バリデーション
+        $this->put("companies/$companyId/sections/$sectionId", [
+            'name' => $section->name,
+        ]);
+
+        $response->assertStatus(302);
+
+        $this->put("companies/$companyId/sections/$sectionId", [
+            'name' => '',
+        ]);
+
+        $validation = '名前は必ず指定してください。';
+        $this->get("/companies/$companyId/sections/$sectionId/edit")
+            ->assertSee($validation);
+
+        $this->put("companies/$companyId/sections/$sectionId", [
+            'name' => str_repeat('a', 256),
+        ]);
+
+        $validation = '名前は、255文字以下で指定してください。';
+        $this->get("companies/$companyId/sections/$sectionId/edit")
+            ->assertSee($validation);
+
+        $this->put("companies/$companyId/sections/$sectionId", [
+            'name' => 12345,
+        ]);
+
+        $validation = '名前は文字列を指定してください。';
+        $this->get("companies/$companyId/sections/$sectionId/edit")
+            ->assertSee($validation);
     }
 
     public function test_destroy()

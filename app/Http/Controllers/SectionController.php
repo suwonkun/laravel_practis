@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Company;
 use App\Models\Section;
 use App\Rules\UniqueSectionName;
+use App\Rules\UpdateUniqueSectionName;
 
 class SectionController extends Controller
 {
@@ -98,6 +99,9 @@ class SectionController extends Controller
      */
     public function update(UpdateSectionRequest $request, Company $company, Section $section)
     {
+        $request->validate([
+            'name' => ['max:255','required','string',new UpdateUniqueSectionName("$company->id", $section)]
+        ]);
         $section->name = $request->input('name');
         $section->save();
 
