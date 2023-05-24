@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Company;
 use App\Models\Section;
+use App\Rules\UniqueSectionName;
 
 class SectionController extends Controller
 {
@@ -40,6 +41,10 @@ class SectionController extends Controller
      */
     public function store(StoreSectionRequest $request, Company $company): RedirectResponse
     {
+        $request->validate([
+            'name' => ['max:255','required','string',new UniqueSectionName("$company->id")]
+        ]);
+
         $section = new Section();
 
         $section->create([
