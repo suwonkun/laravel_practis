@@ -9,6 +9,7 @@ use Tests\TestCase;
 use Database\Factories\UserFactory;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CompanyTest extends TestCase
 {
@@ -21,6 +22,7 @@ class CompanyTest extends TestCase
      */
     public function testGetCompanies()
     {
+        Company::factory()->create();
         // ユーザー作成
         $user = User::factory()->create();
 
@@ -36,6 +38,8 @@ class CompanyTest extends TestCase
 
     public function testGetCreateCompanies()
     {
+        Company::factory()->create();
+
         $user = User::factory()->create();
 
         Auth::login($user);
@@ -47,6 +51,8 @@ class CompanyTest extends TestCase
 
     public function testStoreCompanies()
     {
+        Company::factory()->create();
+
         $user = User::factory()->create();
 
         Auth::login($user);
@@ -65,7 +71,17 @@ class CompanyTest extends TestCase
     {
         $company = Company::factory()->create();
 
-        $user = User::factory()->create();
+        $user = User::create([
+            'name' => 'test', // ユーザー名
+            'email' => 'test@example.com', // ユーザーのメールアドレス
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'), // パスワード
+            'remember_token' => Str::random(10),
+        ]);
+
+        $user->company_id = $company->id;
+
+        $user->save();
 
         $response = $this->actingAs($user)->get("/companies/$company->id");
 
@@ -76,7 +92,18 @@ class CompanyTest extends TestCase
     {
         $company = Company::factory()->create();
 
-        $user = User::factory()->create();
+
+        $user = User::create([
+            'name' => 'test', // ユーザー名
+            'email' => 'test@example.com', // ユーザーのメールアドレス
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'), // パスワード
+            'remember_token' => Str::random(10),
+        ]);
+
+        $user->company_id = $company->id;
+
+        $user->save();
 
         Auth::login($user);
 
@@ -93,7 +120,17 @@ class CompanyTest extends TestCase
     {
         $company = Company::factory()->create();
 
-        $user = User::factory()->create();
+        $user = User::create([
+            'name' => 'test', // ユーザー名
+            'email' => 'test@example.com', // ユーザーのメールアドレス
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'), // パスワード
+            'remember_token' => Str::random(10),
+        ]);
+
+        $user->company_id = $company->id;
+
+        $user->save();
 
         $url = route('companies.destroy', $company->id);
 
