@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
+use App\Models\Section;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -50,7 +51,8 @@ class CompanyController extends Controller
      */
     public function show(Company $company): View
     {
-        return view('companies.show', compact('company'));
+        $sections = $company->section;
+        return view('companies.show', compact('company', 'sections'));
     }
 
     /**

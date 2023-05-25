@@ -50,4 +50,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class, 'user_sections', 'user_id', 'section_id');
+    }
+
 }

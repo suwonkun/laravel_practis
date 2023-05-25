@@ -22,10 +22,10 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                {{ Form::open(['url' => route('companies.store')]) }}
+                {{ Form::open(['url' => route('companies.update', compact('company')), 'method' => 'PUT']) }}
 
                 {{ Form::label('name', 'Name') }}
-                {{ Form::text('name', old('name'), ['placeholder' => '会社名']) }}
+                {{ Form::text('name', old('name', $company->name), ['placeholder' => '会社名']) }}
 
                 <div>
                     {{ Form::submit('Save') }}
