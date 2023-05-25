@@ -19,7 +19,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => 1, // company_id 追加
+            'company_id' => function () {
+                return Company::query()->inRandomOrder()->first()->id;
+            },// company_id 追加
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
