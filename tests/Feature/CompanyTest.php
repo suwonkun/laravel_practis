@@ -67,6 +67,29 @@ class CompanyTest extends TestCase
         $this->assertNotNull($company);
     }
 
+    public function testShowCompanies()
+    {
+        $company = Company::factory()->create();
+
+        $user = User::factory()->create();
+
+        Auth::login($user);
+
+        $response = $this->actingAs($user)->get("/companies/$company->id");
+
+        $response->assertStatus(200);
+
+
+        $user->company->id = $company->id + 1;
+
+        $user->save();
+
+        $response = $this->actingAs($user)->get("/companies/$company->id");
+
+
+        $response->assertStatus(403);
+    }
+
     public function testGetEditCompanies()
     {
         $company = Company::factory()->create();
@@ -83,9 +106,18 @@ class CompanyTest extends TestCase
 
         $user->save();
 
-        $response = $this->actingAs($user)->get("/companies/$company->id");
+        $response = $this->actingAs($user)->get("/companies/$company->id/edit");
 
         $response->assertStatus(200);
+
+        $user->company->id = $company->id + 1;
+
+        $user->save();
+
+        $response = $this->actingAs($user)->get("/companies/$company->id/edit");
+
+
+        $response->assertStatus(403);
     }
 
     public function testUpdateCompany()
@@ -114,6 +146,19 @@ class CompanyTest extends TestCase
         $company = Company::where('name', 'PRUM2')->first();
         $response->assertStatus(302);
         $this->assertNotNull($company);
+
+
+        $user->company->id = $company->id + 1;
+
+        $user->save();
+
+        $response = $this->actingAs($user)->put("/companies/$company->id", [
+            'name' => 'PRUM3',
+        ]);
+
+        $response->assertStatus(403);
+        $company = Company::where('name', 'PRUM3')->first();
+        $this->assertNull($company);
     }
 
     public function testDestroyCompany()
