@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\User;
 use App\Models\Section;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class SectionTest extends TestCase
@@ -25,6 +26,16 @@ class SectionTest extends TestCase
         $this->company = Company::factory()->create();
         $this->sections = Section::factory()->count(100)->create();
         $this->user = User::factory()->create();
+        $this->other_company = Company::factory()->create();
+        $this->other_user = User::create([
+            'name' => 'test', // ユーザー名
+            'email' => 'test@example.com', // ユーザーのメールアドレス
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'), // パスワード
+            'remember_token' => Str::random(10),
+        ]);
+        $this->other_user->company_id = $this->other_company->id;
+        $this->other_user->save();
     }
 
     public function test_create()
@@ -41,6 +52,12 @@ class SectionTest extends TestCase
         $response = $this->get("companies/$companyId/sections/create");
 
         $response->assertStatus(200);
+
+        Auth::login($this->other_user);
+
+        $response = $this->get("companies/$companyId/sections/create");
+
+        $response->assertStatus(403);
     }
 
     public function test_store()
@@ -101,6 +118,14 @@ class SectionTest extends TestCase
         $validation = '名前は文字列を指定してください。';
         $this->get("/companies/$companyId/sections/create")
             ->assertSee($validation);
+
+        Auth::login($this->other_user);
+
+        $response = $this->post("/companies/$companyId/sections", [
+            'name' => '営業',
+        ]);
+
+        $response->assertStatus(403);
     }
 
     public function test_show()
@@ -113,6 +138,12 @@ class SectionTest extends TestCase
         $response = $this->get("companies/$companyId/sections/$sectionId");
 
         $response->assertStatus(200);
+
+        Auth::login($this->other_user);
+
+        $response = $this->get("companies/$companyId/sections/$sectionId");
+
+        $response->assertStatus(403);
     }
 
     public function test_edit()
@@ -125,6 +156,12 @@ class SectionTest extends TestCase
         $response = $this->get("companies/$companyId/sections/$sectionId/edit");
 
         $response->assertStatus(200);
+
+        Auth::login($this->other_user);
+
+        $response = $this->get("companies/$companyId/sections/$sectionId/edit");
+
+        $response->assertStatus(403);
     }
 
     public function test_update()
@@ -171,12 +208,25 @@ class SectionTest extends TestCase
         $validation = '名前は文字列を指定してください。';
         $this->get("companies/$companyId/sections/$sectionId/edit")
             ->assertSee($validation);
+
+        Auth::login($this->other_user);
+
+        $response = $this->put("companies/$companyId/sections/$sectionId", ['name' => '営業',
+        ]);
+
+        $response->assertStatus(403);
     }
 
     public function test_destroy()
     {
         $companyId = $this->company->id;
         $sectionId = $this->sections->first()->id;
+
+        Auth::login($this->other_user);
+
+        $response = $this->delete("companies/$companyId/sections/$sectionId");
+
+        $response->assertStatus(403);
 
         Auth::login($this->user);
 

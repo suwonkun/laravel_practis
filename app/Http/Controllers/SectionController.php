@@ -27,6 +27,7 @@ class SectionController extends Controller
     public function create($id)
     {
         $company = Company::find($id);
+        $this->authorize('create', [Section::class, $company]);
         return view('sections.create', compact('company'));
     }
 
@@ -38,6 +39,8 @@ class SectionController extends Controller
      */
     public function store(StoreSectionRequest $request, Company $company): RedirectResponse
     {
+        $this->authorize('store', [Section::class, $company]);
+
         $request->validate([
             'name' => ['max:255','required','string',new UniqueSectionName("$company->id")]
         ]);
@@ -60,6 +63,8 @@ class SectionController extends Controller
      */
     public function show(Company $company, Section $section)
     {
+        $this->authorize('show', [Section::class, $company]);
+
         $unjoin_users = User::where('company_id', $company->id)
             ->whereDoesntHave('sections', function ($query) use ($section) {
                 $query->where('section_id', $section->id);
@@ -83,6 +88,7 @@ class SectionController extends Controller
      */
     public function edit(Company $company, Section $section)
     {
+        $this->authorize('edit', [Section::class, $company]);
         return view('sections.edit', compact('section'));
     }
 
@@ -95,6 +101,8 @@ class SectionController extends Controller
      */
     public function update(UpdateSectionRequest $request, Company $company, Section $section)
     {
+        $this->authorize('update', [Section::class, $company]);
+
         $request->validate([
             'name' => ['max:255','required','string',new UpdateUniqueSectionName("$company->id", $section)]
         ]);
@@ -113,6 +121,8 @@ class SectionController extends Controller
      */
     public function destroy(Company $company, Section $section)
     {
+        $this->authorize('delete', [Section::class, $company]);
+
         $section->delete();
 
         return redirect()->route('companies.show', ['company' => $company]);
