@@ -6,6 +6,16 @@
     </x-slot>
     <h1>{{ $company->name }}</h1>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li style="color: red;">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('sections.store', ['company' => $company]) }}" method="POST">
         @csrf
         <input type="text" name="name" placeholder="Name">

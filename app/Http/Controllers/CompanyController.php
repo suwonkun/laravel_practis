@@ -51,6 +51,8 @@ class CompanyController extends Controller
      */
     public function show(Company $company): View
     {
+        $this->authorize('show', $company);
+
         $sections = $company->section;
         return view('companies.show', compact('company', 'sections'));
     }
@@ -60,6 +62,7 @@ class CompanyController extends Controller
      */
     public function edit(Company $company): View
     {
+        $this->authorize('edit', $company);
         return view('companies.edit', compact('company'));
     }
 
@@ -68,6 +71,7 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompanyRequest $request, Company $company): RedirectResponse
     {
+        $this->authorize('update', $company);
         $company->fill($request->validated())
             ->save();
 
@@ -79,6 +83,7 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company): RedirectResponse
     {
+        $this->authorize('delete', $company);
         $company->delete();
 
         return redirect()->route('companies.index');
