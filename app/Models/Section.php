@@ -20,6 +20,6 @@ class Section extends Model
     }
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_section', 'section_id', 'user_id');
+        return $this->belongsToMany(User::class, 'section_user', 'section_id', 'user_id');
     }
 }
