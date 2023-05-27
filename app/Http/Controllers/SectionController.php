@@ -64,13 +64,21 @@ class SectionController extends Controller
     {
         $this->authorize('show', [Section::class, $company]);
 
-        $unjoin_users = User::where('company_id', $company->id)
-            ->whereDoesntHave('sections', function ($query) use ($section) {
-                $query->where('section_id', $section->id);
-            })
-            ->get();
+//        $unjoin_users = User::where('company_id', $company->id)
+//            ->whereDoesntHave('sections', function ($query) use ($section) {
+//                $query->where('section_id', $section->id);
+//            })
+//            ->get();
 
-        return view('sections.show', compact('section', 'unjoin_users', 'company'));
+        $company->load([
+            'users' => function($query) use ($section) {
+                $query->whereDoesntHave('sections', function ($query) use ($section) {
+                    $query->where('section_id', $section->id);
+                });
+            }
+        ]);
+
+        return view('sections.show', compact('section',  'company'));
     }
 
     /**

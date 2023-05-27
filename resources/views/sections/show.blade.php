@@ -4,7 +4,7 @@
 <form action="{{ route('section_user.store', ['company' => $company, 'section' => $section]) }}" method="POST">
     @csrf
     <select name="user_id">
-        @foreach($unjoin_users as $user)
+        @foreach($company->users as $user)
             <option value="{{ $user->id }}">{{ $user->name }}</option>
         @endforeach
     </select>
