@@ -24,9 +24,8 @@ class SectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create(Company $company)
     {
-        $company = Company::find($id);
         $this->authorize('create', [Section::class, $company]);
         return view('sections.create', compact('company'));
     }
