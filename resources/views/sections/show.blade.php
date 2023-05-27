@@ -10,7 +10,7 @@
     </select>
     <button type="submit">部署に追加する</button>
     <h2>所属しているユーザー</h2>
-    @foreach($join_users as $user)
+    @foreach($section->users as $user)
         <option value="{{ $user->id }}">{{ $user->name }}</option>
     @endforeach
 </form>

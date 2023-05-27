@@ -18,4 +18,8 @@ class Section extends Model
     {
         return $this->belongsTo(Company::class);
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_sections', 'section_id', 'user_id');
+    }
 }

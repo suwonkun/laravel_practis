@@ -70,13 +70,7 @@ class SectionController extends Controller
             })
             ->get();
 
-        $join_users = User::where('company_id', $company->id)
-            ->whereHas('sections', function ($query) use ($section) {
-                $query->where('section_id', $section->id);
-            })
-            ->get();
-
-        return view('sections.show', compact('section', 'unjoin_users', 'company', 'join_users'));
+        return view('sections.show', compact('section', 'unjoin_users', 'company'));
     }
 
     /**
