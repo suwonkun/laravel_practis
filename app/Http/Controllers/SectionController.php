@@ -46,8 +46,7 @@ class SectionController extends Controller
 
         $section = new Section();
 
-        $section->create([
-            'company_id' => $company->id,
+        $company->sections()->create([
             'name' => $request->name
         ]);
 
@@ -63,12 +62,6 @@ class SectionController extends Controller
     public function show(Company $company, Section $section)
     {
         $this->authorize('show', [Section::class, $company]);
-
-//        $unjoin_users = User::where('company_id', $company->id)
-//            ->whereDoesntHave('sections', function ($query) use ($section) {
-//                $query->where('section_id', $section->id);
-//            })
-//            ->get();
 
         $company->load([
             'users' => function($query) use ($section) {
