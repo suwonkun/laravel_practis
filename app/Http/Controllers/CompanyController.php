@@ -53,8 +53,7 @@ class CompanyController extends Controller
     {
         $this->authorize('show', $company);
 
-        $sections = $company->section;
-        return view('companies.show', compact('company', 'sections'));
+        return view('companies.show', compact('company'));
     }
 
     /**
