@@ -24,9 +24,8 @@ class SectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create(Company $company)
     {
-        $company = Company::find($id);
         $this->authorize('create', [Section::class, $company]);
         return view('sections.create', compact('company'));
     }
@@ -41,14 +40,9 @@ class SectionController extends Controller
     {
         $this->authorize('store', [Section::class, $company]);
 
-        $request->validate([
-            'name' => ['max:255','required','string',new UniqueSectionName("$company->id")]
-        ]);
+        $request->validated($company);
 
-        $section = new Section();
-
-        $section->create([
-            'company_id' => $company->id,
+        $company->sections()->create([
             'name' => $request->name
         ]);
 
@@ -65,19 +59,15 @@ class SectionController extends Controller
     {
         $this->authorize('show', [Section::class, $company]);
 
-        $unjoin_users = User::where('company_id', $company->id)
-            ->whereDoesntHave('sections', function ($query) use ($section) {
-                $query->where('section_id', $section->id);
-            })
-            ->get();
+        $company->load([
+            'users' => function($query) use ($section) {
+                $query->whereDoesntHave('sections', function ($query) use ($section) {
+                    $query->where('section_id', $section->id);
+                });
+            }
+        ]);
 
-        $join_users = User::where('company_id', $company->id)
-            ->whereHas('sections', function ($query) use ($section) {
-                $query->where('section_id', $section->id);
-            })
-            ->get();
-
-        return view('sections.show', compact('section', 'unjoin_users', 'company', 'join_users'));
+        return view('sections.show', compact('section',  'company'));
     }
 
     /**
@@ -103,9 +93,7 @@ class SectionController extends Controller
     {
         $this->authorize('update', [Section::class, $company]);
 
-        $request->validate([
-            'name' => ['max:255','required','string',new UpdateUniqueSectionName("$company->id", $section)]
-        ]);
+        $request->validated();
         $section->name = $request->input('name');
         $section->save();
 

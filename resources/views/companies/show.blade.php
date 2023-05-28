@@ -27,7 +27,7 @@
                 <div class="mt-6">
                     <h3>部署一覧</h3>
                     <ul>
-                        @foreach($sections as $section)
+                        @foreach($company->sections as $section)
                             <div class="mt-2">
                                 <a href="{{ route('sections.show', ['company' => $company, 'section' => $section]) }}">
                                     {{ $section->name }}

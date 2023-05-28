@@ -22,7 +22,7 @@ class Company extends Model
         return $this->hasMany(User::class);
     }
 
-    public function section(): HasMany
+    public function sections(): HasMany
     {
         return $this->hasMany(Section::class);
     }

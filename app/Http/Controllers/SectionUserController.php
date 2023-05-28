@@ -12,12 +12,7 @@ class SectionUserController extends Controller
 {
     public function store(Request $request, Company $company, Section $section)
     {
-        $user_section = new UserSection();
-
-        $user_section->create([
-            'user_id' => $request->user_id,
-            'section_id' => $section->id
-        ]);
+        $section->users()->attach($request->user_id);
 
         return redirect()->back()->with('success', 'ユーザーが部署に登録されました。');
     }

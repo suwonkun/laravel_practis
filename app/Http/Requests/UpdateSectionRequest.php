@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\UpdateUniqueSectionName;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSectionRequest extends FormRequest
@@ -24,7 +25,7 @@ class UpdateSectionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['max:255','required','string',new UpdateUniqueSectionName($this->company->id, $this->section)]
         ];
     }
 }
