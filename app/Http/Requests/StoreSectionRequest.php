@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\UniqueSectionName;
+use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSectionRequest extends FormRequest
@@ -24,7 +26,7 @@ class StoreSectionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['max:255','required','string',new UniqueSectionName($this->company->id)]
         ];
     }
 }

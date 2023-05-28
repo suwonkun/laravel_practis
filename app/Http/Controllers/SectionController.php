@@ -40,11 +40,7 @@ class SectionController extends Controller
     {
         $this->authorize('store', [Section::class, $company]);
 
-        $request->validate([
-            'name' => ['max:255','required','string',new UniqueSectionName("$company->id")]
-        ]);
-
-        $section = new Section();
+        $request->validated($company);
 
         $company->sections()->create([
             'name' => $request->name
@@ -97,9 +93,7 @@ class SectionController extends Controller
     {
         $this->authorize('update', [Section::class, $company]);
 
-        $request->validate([
-            'name' => ['max:255','required','string',new UpdateUniqueSectionName("$company->id", $section)]
-        ]);
+        $request->validated();
         $section->name = $request->input('name');
         $section->save();
 
